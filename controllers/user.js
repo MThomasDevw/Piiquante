@@ -5,9 +5,11 @@ const jwt = require('jsonwebtoken'); //Permet de créer des token aléatoire et 
 //Importation du modéle de création utilisateur
 const User = require('../models/User');
 
+require('dotenv').config();
+
 //Exportation de 'signup'
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10) //Hashage du password avec bcrypt (hash 10 fois (+ la hashage est élevé, + le script met du temps à se terminer))
+    bcrypt.hash(req.body.password, process.env.NUMBER_OF_HASH) //Hashage du password avec bcrypt (hash 10 fois (+ la hashage est élevé, + le script met du temps à se terminer))
     .then(hash => { //Création de l'utilisateur
         const user = new User({
             email: req.body.email, //Récupèration du corps de la requête email
@@ -36,8 +38,8 @@ exports.login = (req, res, next) => {
                 userId: user._id, //Renvoi userId
                 token: jwt.sign( //Renvoi un token
                     { userId: user._id }, //Renvoi l'userId , un token random et une date d'expiration
-                    'RANDOM_TOKEN_SECRET',
-                    { expiresIn: '24h' } //Le token expire après 24h
+                    process.env.JWT_PRIVATE_KEY,
+                    { expiresIn: process.env.TIME_TOKEN } //Le token expire après 24h
                 )
             });
         })  

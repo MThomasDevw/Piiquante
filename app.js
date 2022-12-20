@@ -13,7 +13,7 @@ const userRoutes = require('./routes/user'); //Routes des utilisateurs
 
 require('dotenv').config(); //Importation du packages dotenv qui permet de protéger les informations de connexion vers la BDD
 
-mongoose.connect('mongodb+srv://cryptoto47:tomtom47@projet6.2da4rfu.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://'+process.env.DB_USER+':'+process.env.DB_PASSWORD + '@projet6.2da4rfu.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
