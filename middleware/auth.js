@@ -1,11 +1,13 @@
 //Importation des packages
 const jwt = require('jsonwebtoken'); //Importation de 'jsonwebtoken' pour créer des token aléatoire et unique pour la connexion
 
+require('dotenv').config();
+
 //Exportation du module de token
 module.exports = (req, res, next) => {
     try{
         const token = req.headers.authorization.split(' ')[1];//Fonction split qui récupére tout le header après l'espace 
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET'); //Fontion 'verify' de 'jsonwebtoken' qui décode le token, si mauvais renvoi une erreur
+        const decodedToken = jwt.verify(token, process.env.JWT_PRIVATE_KEY); //Fontion 'verify' de 'jsonwebtoken' qui décode le token, si mauvais renvoi une erreur
         const userId = decodedToken.userId; //Extraction du userId grace au token
         if (req.body.userId && req.body.userId !== userId) { //Vérification du userId et du userId extrait du token, si pas les mêmes renvoi une erreur
             throw 'User ID non valable'; //Renvoi un message d'erreur
